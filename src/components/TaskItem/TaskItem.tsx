@@ -26,6 +26,11 @@ const TaskItem = ({
     setIsChecked(task.status === TaskStatus.Completed);
   }, [task.status]);
 
+  // Check if task.dueDate is a valid Date object before calling toDateString()
+  const dueDateString = task.dueDate ? (new Date(task.dueDate)).toDateString() : '';
+
+
+
   const strikeThroughStyle: TextStyle | null = isChecked ? { textDecorationLine: "line-through", color: "#808080"} : null;
   const dueDateColor: TextStyle = { color: isChecked ? "#808080" : "#007bff" };
 
@@ -39,11 +44,13 @@ const TaskItem = ({
       </TouchableOpacity>
       <View style={styles.content}>
         <Text style={[styles.title, strikeThroughStyle]}>{task.title}</Text>
-        <Text style={[styles.dueDate, dueDateColor]}>{task.dueDate.toDateString()}</Text>
+        {/* Display due date only if it's a valid Date object */}
+        {dueDateString && <Text style={[styles.dueDate, dueDateColor]}>{dueDateString}</Text>}
       </View>
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
