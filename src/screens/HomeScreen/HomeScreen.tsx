@@ -1,20 +1,16 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import useTaskStore from "../../store/taskStore";
-import TaskList from "../../components/TaskList/TaskList";
-import Button from "../../components/UI/Button";
-import { TaskStatus } from "../../types/task";
-import { FontAwesome } from "@expo/vector-icons";
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons'; 
+import Collapsible from 'react-native-collapsible'; 
+import TaskList from '../../components/TaskList/TaskList';
+import { TaskStatus } from '../../types/task';
+import useTaskStore from '../../store/taskStore';
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
-  const {
-    getTodayTasks,
-    getTomorrowTasks,
-    getThisWeekTasks,
-    deleteTask,
-    getTasksByStatus,
-    tasks,
-  } = useTaskStore();
+  const { getTodayTasks, getTomorrowTasks, getThisWeekTasks, getTasksByStatus, deleteTask } = useTaskStore();
+  const [isTomorrowCollapsed, setIsTomorrowCollapsed] = useState(true);
+  const [isThisWeekCollapsed, setIsThisWeekCollapsed] = useState(true);
+  const [isCompletedCollapsed, setIsCompletedCollapsed] = useState(true);
 
   const handleDeleteTask = (taskId: string) => {
     deleteTask(taskId);
@@ -27,20 +23,33 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       <TaskList tasks={getTodayTasks()} onDeleteTask={handleDeleteTask} />
 
       {/* Tomorrow Section */}
-      <Text style={styles.sectionTitle}>Tomorrow</Text>
-      <TaskList tasks={getTomorrowTasks()} onDeleteTask={handleDeleteTask} />
+      <TouchableOpacity style={styles.sectionHeader} onPress={() => setIsTomorrowCollapsed(!isTomorrowCollapsed)}>
+        <Text style={styles.sectionTitle}>Tomorrow</Text>
+        <FontAwesome name={isTomorrowCollapsed ? 'caret-down' : 'caret-up'} size={24} color="green" />
+      </TouchableOpacity>
+      <Collapsible collapsed={isTomorrowCollapsed}>
+        <TaskList tasks={getTomorrowTasks()} onDeleteTask={handleDeleteTask} />
+      </Collapsible>
 
       {/* This Week Section */}
-      <Text style={styles.sectionTitle}>This Week</Text>
-      <TaskList tasks={getThisWeekTasks()} onDeleteTask={handleDeleteTask} />
+      <TouchableOpacity style={styles.sectionHeader} onPress={() => setIsThisWeekCollapsed(!isThisWeekCollapsed)}>
+        <Text style={styles.sectionTitle}>This Week</Text>
+        <FontAwesome name={isThisWeekCollapsed ? 'caret-down' : 'caret-up'} size={24} color="green" />
+      </TouchableOpacity>
+      <Collapsible collapsed={isThisWeekCollapsed}>
+        <TaskList tasks={getThisWeekTasks()} onDeleteTask={handleDeleteTask} />
+      </Collapsible>
 
       {/* Completed Section */}
-      <Text style={styles.sectionTitle}>Completed</Text>
-      <TaskList
-        tasks={getTasksByStatus(TaskStatus.Completed)}
-        onDeleteTask={handleDeleteTask}
-      />
+      <TouchableOpacity style={styles.sectionHeader} onPress={() => setIsCompletedCollapsed(!isCompletedCollapsed)}>
+        <Text style={styles.sectionTitle}>Completed</Text>
+        <FontAwesome name={isCompletedCollapsed ? 'caret-down' : 'caret-up'} size={24} color="green" />
+      </TouchableOpacity>
+      <Collapsible collapsed={isCompletedCollapsed}>
+        <TaskList tasks={getTasksByStatus(TaskStatus.Completed)} onDeleteTask={handleDeleteTask} />
+      </Collapsible>
 
+      {/* Create Task Button */}
       <TouchableOpacity
         style={styles.addButton}
         onPress={() => navigation.navigate("CreateTask")}
@@ -55,39 +64,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#FFFFFF",
   },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    marginBottom: 24,
-    textAlign: "center",
-    color: "#333333",
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 8,
   },
   sectionTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-    color: "#007AFF",
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'green'
   },
   addButton: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 16,
     right: 16,
-    backgroundColor: "#007bff",
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 5,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
+    backgroundColor: 'green',
+    borderRadius: 25,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
