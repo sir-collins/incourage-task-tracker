@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import useTaskStore from "../../store/taskStore";
 import TaskList from "../../components/TaskList/TaskList";
 import Button from "../../components/UI/Button";
 import { TaskStatus } from "../../types/task";
+import { FontAwesome } from "@expo/vector-icons";
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const {
@@ -40,10 +41,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
         onDeleteTask={handleDeleteTask}
       />
 
-      <Button
+      <TouchableOpacity
+        style={styles.addButton}
         onPress={() => navigation.navigate("CreateTask")}
-        title="Create Task"
-      />
+      >
+        <FontAwesome name="plus" size={17} color="white" />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -66,6 +69,25 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 16,
     color: "#007AFF",
+  },
+  addButton: {
+    position: "absolute",
+    bottom: 16,
+    right: 16,
+    backgroundColor: "#007bff",
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
   },
 });
 
