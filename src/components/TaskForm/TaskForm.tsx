@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import TaskFormInput from './TaskFormInput';
-// import DatePicker from '../UI/DatePicker';
 import { Task, TaskStatus } from '../../types/task';
 import DatePickerComponent from '../UI/DatePicker';
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
@@ -12,6 +11,11 @@ const TaskForm = ({ onSubmit }: { onSubmit: (task: Task) => void }) => {
   const [dueDate, setDueDate] = useState<Date>(new Date());
 
   const handleAddTask = () => {
+    if (!title.trim()) {
+      alert('Task title is required');
+      return;
+    }
+    
     const newTask: Task = {
       id: Math.random().toString(),
       title,
