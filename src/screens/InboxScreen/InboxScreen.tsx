@@ -1,29 +1,26 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { FAB, Modal, Portal } from "react-native-paper";
+import {
+  TextInput,
+  FAB,
+  Modal,
+  Portal,
+} from "react-native-paper";
 import { TaskStatus } from "../../types/task";
 import useTaskStore from "../../store/taskStore";
-import CollapsibleSection from "./CollapsibleSection";
+import CollapsibleSection from "../HomeScreen/CollapsibleSection";
 import CreateTaskScreen from "../CreateTaskScreen/CreateTaskScreen";
 
-const HomeScreen = () => {
-  const {
-    getTodayTasks,
-    getTomorrowTasks,
-    getThisWeekTasks,
-    getTasksByStatus,
-    getOverdueTasks,
-  } = useTaskStore();
+const InboxScreen = () => {
+  const { getTodayTasks, getTasksByStatus, getOverdueTasks } = useTaskStore();
+
+  const handleSearch = () => {
+    // Implement your search functionality here
+  };
 
   const sections = [
     { title: "Overdue", getTasks: getOverdueTasks, isCollapsed: true },
     { title: "Today", getTasks: getTodayTasks, isCollapsed: true },
-    { title: "Tomorrow", getTasks: getTomorrowTasks, isCollapsed: true },
-    {
-      title: "Next Seven Days",
-      getTasks: getThisWeekTasks,
-      isCollapsed: false,
-    },
     {
       title: "Completed",
       getTasks: () => getTasksByStatus(TaskStatus.Completed),
@@ -40,6 +37,12 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search..."
+        onChangeText={handleSearch}
+        // Add any necessary props for the search input
+      />
       {sections.map((section, index) => (
         <CollapsibleSection
           key={index}
@@ -71,6 +74,9 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
+  searchInput: {
+    marginBottom: 16,
+  },
   addButton: {
     position: "absolute",
     bottom: 16,
@@ -87,4 +93,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default InboxScreen;

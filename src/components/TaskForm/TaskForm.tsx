@@ -47,6 +47,7 @@ const TaskForm = ({ onSubmit }: { onSubmit: (task: Task) => void }) => {
         label="Description"
         value={description}
         onChangeText={setDescription}
+        multiline={true}
       />
       <DatePickerComponent value={dueDate} onChange={handleDateChange} />
       <Button title="Add Task" onPress={handleAddTask} />

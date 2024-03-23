@@ -1,20 +1,70 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import TaskForm from "../../components/TaskForm/TaskForm";
+import React, { useState } from "react";
+import { StyleSheet, View, Text } from "react-native";
+import { Button, TextInput, IconButton } from "react-native-paper"; // Import IconButton from React Native Paper
+import { Task, TaskStatus } from "../../types/task";
 import useTaskStore from "../../store/taskStore";
-import { Task } from "../../types/task";
 
-const CreateTaskScreen = ({ navigation }: { navigation: any }) => {
+interface CreateTaskScreenProps {
+  onClose: () => void;
+}
+
+const CreateTaskScreen: React.FC<CreateTaskScreenProps> = ({ onClose }) => {
   const { addTask } = useTaskStore();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [error, setError] = useState("");
 
-  const handleCreateTask = (newTask: Task) => {
+  const handleCreateTask = () => {
+    if (!title.trim()) {
+      setError("Title is required");
+      return;
+    }
+
+    const newTask: Task = {
+      id: String(Math.random()),
+      title: title.trim(),
+      description: description.trim(),
+      dueDate: new Date(),
+      status: TaskStatus.Pending,
+    };
+
     addTask(newTask);
-    navigation.navigate("Home"); 
+    onClose();
   };
 
   return (
     <View style={styles.container}>
-      <TaskForm onSubmit={handleCreateTask} />
+      <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="What would you like to do?"
+          value={title}
+          onChangeText={(text) => setTitle(text)}
+          style={styles.input}
+        />
+        <TextInput
+          value={description}
+          onChangeText={(text) => setDescription(text)}
+          style={[styles.input, styles.descriptionInput]}
+        />
+      </View>
+      {error !== "" && <Text style={styles.error}>{error}</Text>}
+      <View style={styles.buttonContainer}>
+        <IconButton
+          icon="calendar"
+          onPress={() => console.log("Date selected")}
+          style={styles.iconButton}
+        />
+        <IconButton
+          icon="close"
+          onPress={onClose}
+          style={[styles.iconButton]}
+        />
+        <IconButton
+          icon="check"
+          onPress={handleCreateTask}
+          style={[styles.iconButton]}
+        />
+      </View>
     </View>
   );
 };
@@ -22,8 +72,36 @@ const CreateTaskScreen = ({ navigation }: { navigation: any }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 0,
+    backgroundColor: "#ffffff",
+  },
+  inputContainer: {
+    marginBottom: 0,
+  },
+  input: {
+    marginBottom: 0,
+    borderWidth: 0,
+    borderBottomWidth: 0,
+    borderTopWidth: 0,
+  },
+  descriptionInput: {
+    height: 50, // Increase height for description input
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  iconButton: {
+    backgroundColor: "transparent",
+  },
+  addButton: {
+    color: "green", // Change color for add button
+  },
+  error: {
+    color: "red",
+    marginBottom: 10,
   },
 });
+
 
 export default CreateTaskScreen;
