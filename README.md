@@ -49,6 +49,9 @@ Contributions to Task Tracker are welcome! If you find any bugs or have suggesti
 ![iPhone Create](./screenshots/iPhone%2015%20create.png)
 ![Pixel Create](./screenshots/pixel%204%20create.png)
 
+![iPhone Date](./screenshots/iPhone%20Date%20Select.png)
+![Pixel Date](./screenshots/pixel%204%20Date%20Select.png)
+
 ![iPhone Search](./screenshots/iPhone%2015%20Search.png)
 ![Pixel Search](./screenshots/pixel%204%20search.png)
 
