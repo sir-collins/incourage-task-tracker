@@ -29,6 +29,14 @@ To run the Task Tracker application locally on your machine, follow these steps:
 
 Make sure you have Node.js, npm, and Expo CLI installed on your machine before proceeding with the installation.
 
+## Testing
+
+Unit tests ensure the reliability of the application. To run the tests, use the following command:
+
+```bash
+npm run test
+```
+
 ## Usage
 
 Once the application is running, you can use it to manage your tasks by navigating through different sections such as today, tomorrow, this week, and completed tasks. You can add new tasks using the "+" button at the bottom of the screen.
@@ -36,7 +44,6 @@ Once the application is running, you can use it to manage your tasks by navigati
 ## Contributing
 
 Contributions to Task Tracker are welcome! If you find any bugs or have suggestions for improvements, please open an issue or submit a pull request on GitHub.
-
 
 ## App Screenshots
 
