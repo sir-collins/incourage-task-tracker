@@ -8,6 +8,13 @@ import EditTaskScreen from "../../screens/EditTaskScreen/EditTaskScreen";
 import { format } from "date-fns";
 import { primaryColor } from "../../constants/colors";
 
+/**
+ * TaskItem component for displaying individual tasks in a list.
+ * @param {Object} props - Component props.
+ * @param {Task} props.task - The task object to be displayed.
+ * @returns {JSX.Element} - TaskItem component.
+ */
+
 const TaskItem = ({ task }: { task: Task }) => {
   const [isChecked, setIsChecked] = useState(false);
   const taskStore = useTaskStore();
