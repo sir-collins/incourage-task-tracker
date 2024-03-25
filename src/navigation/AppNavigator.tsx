@@ -7,14 +7,14 @@ import {
 } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FontAwesome } from "@expo/vector-icons";
-import { useTheme } from "react-native-paper";
+import { Icon, IconButton, useTheme } from "react-native-paper";
 import HomeScreen from "../screens/HomeScreen/HomeScreen";
 import TaskDetailsScreen from "../screens/TaskDetailsScreen/TaskDetailsScreen";
 import InboxScreen from "../screens/InboxScreen/InboxScreen";
 import { RootStackParamList, DrawerParamList } from "./types";
 import SearchResultsScreen from "../screens/InboxScreen/SearchResultsScreen";
-import { Platform, View, Image, Text } from "react-native";
-import { getContrastTextColor } from "../constants/colors";
+import { Platform, View, Image, Text, TouchableOpacity } from "react-native";
+import { getContrastTextColor, primaryColor } from "../constants/colors";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -37,22 +37,35 @@ const AppNavigator = () => {
   return (
     <Drawer.Navigator
       initialRouteName="InboxStack"
-      screenOptions={{
+      screenOptions={({ navigation }) => ({
         drawerActiveBackgroundColor: colors.secondary,
         drawerActiveTintColor: colors.primary,
-        drawerInactiveTintColor: '#333',
+        drawerInactiveTintColor: "#333",
         drawerLabelStyle: {
           marginLeft: -25,
           fontSize: 15,
         },
-      }}
+        headerTitleStyle: {
+          color: colors.primary,
+          alignSelf: "center",
+        },
+        headerLeft: (props) => (
+          <FontAwesome
+            name="bars"
+            size={24}
+            color={colors.primary}
+            onPress={navigation.toggleDrawer}
+            style ={{paddingLeft: 8}}
+          />
+        ),
+      })}
       drawerContent={(props) => (
         <View style={{ flex: 1 }}>
           <DrawerContentScrollView
             {...props}
             contentContainerStyle={{ backgroundColor: colors.secondary }}
           >
-            <Image 
+            <Image
               source={require("../../assets/logo-incourage.png")}
               style={{
                 width: 100,
@@ -62,15 +75,16 @@ const AppNavigator = () => {
               }}
             />
             <Text
-            style={{
-              width: 100,
-              fontSize: 12,
-              fontWeight: '300',
-              alignSelf: "center",
-              color: getContrastTextColor(colors.secondary)
-            }}>
-            Simplifying Tasks
-          </Text>
+              style={{
+                width: 100,
+                fontSize: 12,
+                fontWeight: "300",
+                alignSelf: "center",
+                color: getContrastTextColor(colors.secondary),
+              }}
+            >
+              Simplifying Tasks
+            </Text>
             <View
               style={{
                 flex: 1,
@@ -90,6 +104,8 @@ const AppNavigator = () => {
         component={HomeScreen}
         options={{
           drawerLabel: "All",
+          title: "All",
+          headerTitleAlign: "center",
           drawerIcon: ({ color, size }) => (
             <FontAwesome name="home" size={size} color={colors.primary} />
           ),
@@ -100,6 +116,8 @@ const AppNavigator = () => {
         component={InboxStack}
         options={{
           drawerLabel: "Inbox",
+          title: "Inbox",
+          headerTitleAlign: "center",
           drawerIcon: ({ color, size }) => (
             <FontAwesome name="inbox" size={size} color={colors.primary} />
           ),
