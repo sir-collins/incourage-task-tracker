@@ -38,4 +38,13 @@ Once the application is running, you can use it to manage your tasks by navigati
 Contributions to Task Tracker are welcome! If you find any bugs or have suggestions for improvements, please open an issue or submit a pull request on GitHub.
 
 
+# App Screenshots
+
+![iPhone Drawer ](./screenshots/iPhone 15 Drawer.png) 
+![Pixel Drawer](./screenshots/pixel 4 Drawer.png)
+
+![iPhone Inbox ](./screenshots/iPhone 15 Inbox.png) 
+![Pixel Inbox](./screenshots/pixel 4 Inbox.png)
+
+
 
