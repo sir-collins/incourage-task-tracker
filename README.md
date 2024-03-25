@@ -52,3 +52,9 @@ Contributions to Task Tracker are welcome! If you find any bugs or have suggesti
 ![iPhone Search](./screenshots/iPhone%2015%20Search.png)
 ![Pixel Search](./screenshots/pixel%204%20search.png)
 
+![iPhone All](./screenshots/iPhone%2015%20All.png)
+![Pixel All](./screenshots/pixel%204%20All.png)
+
+![iPhone Edit](./screenshots/iPhone%2015%20Edit.png)
+![Pixel Edit](./screenshots/pixel%204%20Edit.png)
+
