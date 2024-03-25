@@ -40,11 +40,7 @@ Contributions to Task Tracker are welcome! If you find any bugs or have suggesti
 
 # App Screenshots
 
-![iPhone Drawer ](./screenshots/iPhone 15 Drawer.png) 
-![Pixel Drawer](./screenshots/pixel 4 Drawer.png)
 
-![iPhone Inbox ](./screenshots/iPhone 15 Inbox.png) 
-![Pixel Inbox](./screenshots/pixel 4 Inbox.png)
 
 
 
