@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { useTheme, TextInput, IconButton } from "react-native-paper"; // Import IconButton from React Native Paper
+import { useTheme, TextInput, IconButton } from "react-native-paper";
 import { Task, TaskStatus } from "../../types/task";
 import useTaskStore from "../../store/taskStore";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   addButton: {
-    color: "green", // Change color for add button
+    color: "green",
   },
   error: {
     color: "red",

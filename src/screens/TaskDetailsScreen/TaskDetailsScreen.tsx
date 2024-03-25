@@ -1,8 +1,7 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 
 const TaskDetailsScreen = ({ route }: { route: any }) => {
-  // Extract task details from route params
   const { task } = route.params;
 
   return (
@@ -22,7 +21,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   description: {
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
   },
   status: {
     fontSize: 16,
-    color: '#555',
+    color: "#555",
   },
 });
 

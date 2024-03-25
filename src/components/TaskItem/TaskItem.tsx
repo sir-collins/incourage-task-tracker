@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity, StyleSheet, View } from "react-native";
-import { List, Text } from "react-native-paper"; // Import List from React Native Paper
+import { List, Text } from "react-native-paper";
 import { Task, TaskStatus } from "../../types/task";
 import useTaskStore from "../../store/taskStore";
 import { Portal, Modal } from "react-native-paper";
@@ -117,14 +117,14 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 0,
     minWidth: "100%",
-    alignSelf: "center", // Center horizontally
+    alignSelf: "center",
     maxHeight: "20%",
-    justifyContent: "center", // Center vertically
+    justifyContent: "center",
   },
   descriptionContainer: {},
   description: {
     fontSize: 14,
-    color: "#808080"
+    color: "#808080",
   },
   checkedDescription: {
     fontSize: 14,

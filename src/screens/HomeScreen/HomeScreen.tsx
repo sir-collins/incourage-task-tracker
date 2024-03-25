@@ -40,7 +40,7 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: '#f5f5f5'}]}>
+    <View style={[styles.container, { backgroundColor: "#f5f5f5" }]}>
       <ScrollView>
         {sections.map((section, index) => (
           <CollapsibleSection
@@ -85,9 +85,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 0,
     minWidth: "100%",
-    alignSelf: "center", // Center horizontally
+    alignSelf: "center",
     maxHeight: "20%",
-    justifyContent: "center", // Center vertically
+    justifyContent: "center",
   },
 });
 

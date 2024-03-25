@@ -6,11 +6,11 @@ import {
 import { TaskState } from "./types";
 import { Task, TaskStatus } from "../types/task";
 import { asyncStorage } from "../utils/storageUtils";
-import { format, isToday, isTomorrow, isAfter, isBefore } from 'date-fns';
+import { format, isToday, isTomorrow, isAfter, isBefore } from "date-fns";
 import { nanoid } from "nanoid";
 
 const persistOptions: PersistOptions<TaskState, TaskState> = {
-  name: "task-store", // unique name
+  name: "task-store",
   storage: {
     getItem: async (name) => {
       const storedValue = await asyncStorage.getItem(name);
@@ -62,7 +62,7 @@ const useTaskStore = create(
       },
       getThisWeekTasks: (): Task[] => {
         const today = new Date();
-        const endOfWeek = new Date(today.getTime() + 6 * 24 * 60 * 60 * 1000); // End of the week
+        const endOfWeek = new Date(today.getTime() + 6 * 24 * 60 * 60 * 1000);
         return useTaskStore
           .getState()
           .tasks.filter(
@@ -103,18 +103,18 @@ const useTaskStore = create(
             task.listId === listId ? { ...task, listId: undefined } : task
           ),
         })),
-        searchTasks: (searchText) => {
-          let filteredTasks: Task[] = [];
-          if (searchText.trim() === '') {
-              filteredTasks = [];
-          } else {
-              filteredTasks = get().tasks.filter((task) =>
-                  task.title.toLowerCase().includes(searchText.toLowerCase())
-              );
-          }
-          set({ searchResults: filteredTasks });
+      searchTasks: (searchText) => {
+        let filteredTasks: Task[] = [];
+        if (searchText.trim() === "") {
+          filteredTasks = [];
+        } else {
+          filteredTasks = get().tasks.filter((task) =>
+            task.title.toLowerCase().includes(searchText.toLowerCase())
+          );
+        }
+        set({ searchResults: filteredTasks });
       },
-      
+
       clearSearchResults: () => set({ searchResults: [] }),
     }),
     persistOptions

@@ -9,11 +9,11 @@ export interface Task {
   description: string;
   dueDate: Date;
   status: TaskStatus;
-  listId?: string; // Optional listId to associate a task with a list
+  listId?: string;
 }
 
 export enum TaskStatus {
-  Pending = 'pending',
-  InProgress = 'in_progress',
-  Completed = 'completed',
+  Pending = "pending",
+  InProgress = "in_progress",
+  Completed = "completed",
 }

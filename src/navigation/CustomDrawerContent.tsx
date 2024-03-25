@@ -17,7 +17,6 @@ const CustomDrawerContent = (props: any) => {
     deleteList: state.deleteList,
   }));
 
-
   const [isCreateListModalVisible, setIsCreateListModalVisible] =
     useState(false);
 
@@ -26,10 +25,10 @@ const CustomDrawerContent = (props: any) => {
   };
 
   const renderListItem = (data: any, rowMap: any) => {
-    const { id, label } = data.item;   
+    const { id, label } = data.item;
 
     if (!label) {
-      return null; // Skip rendering if label is undefined or falsy
+      return null;
     }
 
     const renderRightAction = () => (
@@ -50,13 +49,10 @@ const CustomDrawerContent = (props: any) => {
       >
         <DrawerItem
           label={label}
-          onPress={() => {
-            // Implement list item press functionality if needed
-          }}
+          onPress={() => {}}
           icon={({ color, size }) => (
             <FontAwesome name="list" size={size} color={color} />
           )}
-          
         />
       </Swipeable>
     );
@@ -64,36 +60,35 @@ const CustomDrawerContent = (props: any) => {
 
   return (
     <>
-    <DrawerContentScrollView {...props}>
-      <View style={{ flex: 1 }}>
-        <DrawerItemList {...props} />
-        <View style={styles.dividerContainer}>
-          <Divider />
-          <Text style={styles.listHeading}>Lists</Text>
+      <DrawerContentScrollView {...props}>
+        <View style={{ flex: 1 }}>
+          <DrawerItemList {...props} />
+          <View style={styles.dividerContainer}>
+            <Divider />
+            <Text style={styles.listHeading}>Lists</Text>
+          </View>
+          {lists.map((list) => renderListItem({ item: list }, null))}
         </View>
-        {lists.map((list) => renderListItem({ item: list }, null))}
-      </View>
-      <DrawerItem
-        label="Create List"
-        onPress={toggleCreateListModal}
-        icon={({ color, size }) => (
-          <FontAwesome name="plus" size={size} color={color} />
-        )}
-        style={styles.createListButton}
-      />
-    </DrawerContentScrollView>
+        <DrawerItem
+          label="Create List"
+          onPress={toggleCreateListModal}
+          icon={({ color, size }) => (
+            <FontAwesome name="plus" size={size} color={color} />
+          )}
+          style={styles.createListButton}
+        />
+      </DrawerContentScrollView>
 
-    <Portal>
-      <Modal
-        visible={isCreateListModalVisible}
-        onDismiss={toggleCreateListModal}
-        contentContainerStyle={styles.modalContent}
-      >
-        <CreateListScreen onClose={toggleCreateListModal} />
-      </Modal>
-    </Portal>
+      <Portal>
+        <Modal
+          visible={isCreateListModalVisible}
+          onDismiss={toggleCreateListModal}
+          contentContainerStyle={styles.modalContent}
+        >
+          <CreateListScreen onClose={toggleCreateListModal} />
+        </Modal>
+      </Portal>
     </>
-    
   );
 };
 

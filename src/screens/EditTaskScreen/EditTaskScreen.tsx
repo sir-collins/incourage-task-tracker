@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { IconButton, TextInput, Button, useTheme } from "react-native-paper"; // Import IconButton, TextInput, and Button from React Native Paper
+import { IconButton, TextInput, Button, useTheme } from "react-native-paper";
 import { Task } from "../../types/task";
 import useTaskStore from "../../store/taskStore";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -39,7 +39,6 @@ const EditTaskScreen: React.FC<EditTaskScreenProps> = ({ task, onClose }) => {
     hideDatePicker();
   };
 
-  // Function to handle task update
   const handleUpdateTask = () => {
     if (!title.trim()) {
       setError("Title is required");
@@ -129,7 +128,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   descriptionInput: {
-    height: 60, // Increase height for description input
+    height: 60,
   },
   buttonContainer: {
     flexDirection: "row",
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
   error: {
     color: "red",
     marginBottom: 10,
-    paddingHorizontal: 16, // Add horizontal padding for error text
+    paddingHorizontal: 16,
   },
 });
 
