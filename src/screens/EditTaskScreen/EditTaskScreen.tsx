@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { IconButton, TextInput, Button } from "react-native-paper"; // Import IconButton, TextInput, and Button from React Native Paper
-import { Task, TaskStatus } from "../../types/task";
+import { IconButton, TextInput, Button, useTheme } from "react-native-paper"; // Import IconButton, TextInput, and Button from React Native Paper
+import { Task } from "../../types/task";
 import useTaskStore from "../../store/taskStore";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { format } from "date-fns";
+import { primaryColor } from "../../constants/colors";
 
 interface EditTaskScreenProps {
   task: Task;
@@ -14,6 +17,27 @@ const EditTaskScreen: React.FC<EditTaskScreenProps> = ({ task, onClose }) => {
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.description);
   const [error, setError] = useState("");
+  const [dueDate, setDueDate] = useState(task.dueDate);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const theme = useTheme();
+  const titleRef = useRef<any>(null);
+
+  useEffect(() => {
+    titleRef.current?.focus();
+  }, []);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleDateConfirm = (date: React.SetStateAction<Date>) => {
+    setDueDate(date);
+    hideDatePicker();
+  };
 
   // Function to handle task update
   const handleUpdateTask = () => {
@@ -26,6 +50,7 @@ const EditTaskScreen: React.FC<EditTaskScreenProps> = ({ task, onClose }) => {
       ...task,
       title: title.trim(),
       description: description.trim(),
+      dueDate: dueDate,
     };
 
     updateTask(task.id, updatedTask);
@@ -36,49 +61,54 @@ const EditTaskScreen: React.FC<EditTaskScreenProps> = ({ task, onClose }) => {
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <TextInput
+          ref={titleRef}
           placeholder="What would you like to do?"
           value={title}
           onChangeText={(text) => setTitle(text)}
           style={styles.input}
-          mode="outlined" // Use outlined mode to remove borders
         />
         <TextInput
           value={description}
           onChangeText={(text) => setDescription(text)}
           style={[styles.input, styles.descriptionInput]}
-          mode="outlined" // Use outlined mode to remove borders
         />
-        {error !== "" && <Text style={styles.error}>{error}</Text>}
-        <View style={styles.buttonContainer}>
+      </View>
+      {error !== "" && <Text style={styles.error}>{error}</Text>}
+      <View style={styles.buttonContainer}>
+        <View style={styles.iconContainer}>
           <IconButton
             icon="calendar"
-            onPress={() => console.log("Date selected")}
-            style={styles.iconButton}
-            size={24} // Set icon size
+            onPress={showDatePicker}
+            iconColor={theme.colors.primary}
+            size={24}
           />
-          <IconButton
-            icon="delete" // Use the delete icon
-            onPress={() => {
-              deleteTask(task.id); // Call the deleteTask function with the task ID
-              onClose(); // Close the modal after deleting the task
-            }}
-            style={styles.iconButton}
-            size={24} // Set icon size
-          />
-          <IconButton
-            icon="close"
-            onPress={onClose}
-            style={[styles.iconButton]}
-            size={24} // Set icon size
-          />
-          <IconButton
-            icon="check"
-            onPress={handleUpdateTask}
-            style={styles.iconButton}
-            size={24} // Set icon size
-          />
+          <Text style={styles.dateText}>{format(dueDate, "d MMMM")}</Text>
         </View>
+        <IconButton
+          icon="delete"
+          onPress={() => {
+            deleteTask(task.id);
+            onClose();
+          }}
+          style={styles.iconButton}
+          iconColor={theme.colors.error}
+          size={24}
+        />
+        <IconButton
+          icon="arrow-up"
+          onPress={handleUpdateTask}
+          style={styles.iconButton}
+          iconColor={theme.colors.primary}
+          size={24}
+        />
       </View>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        date={new Date(dueDate)}
+        onConfirm={handleDateConfirm}
+        onCancel={hideDatePicker}
+      />
     </View>
   );
 };
@@ -95,18 +125,29 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 0,
     borderWidth: 0,
+    height: 40,
+    backgroundColor: "white",
   },
   descriptionInput: {
-    height: 50, // Increase height for description input
+    height: 60, // Increase height for description input
   },
   buttonContainer: {
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 16, // Add horizontal padding for button container
-    paddingBottom: 16, // Add bottom padding for button container
+    backgroundColor: "#ffffff",
   },
   iconButton: {
     backgroundColor: "transparent",
+  },
+  iconContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  dateText: {
+    fontSize: 16,
+    marginHorizontal: 8,
+    color: primaryColor,
   },
   error: {
     color: "red",

@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { Button, TextInput, IconButton } from "react-native-paper"; // Import IconButton from React Native Paper
+import { useTheme, TextInput, IconButton } from "react-native-paper"; // Import IconButton from React Native Paper
 import { Task, TaskStatus } from "../../types/task";
 import useTaskStore from "../../store/taskStore";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { format } from "date-fns";
+import { primaryColor } from "../../constants/colors";
 
 interface CreateTaskScreenProps {
   onClose: () => void;
@@ -13,6 +16,27 @@ const CreateTaskScreen: React.FC<CreateTaskScreenProps> = ({ onClose }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
+  const [dueDate, setDueDate] = useState(new Date());
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const theme = useTheme();
+  const titleRef = useRef<any>(null);
+
+  useEffect(() => {
+    titleRef.current?.focus();
+  }, []);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleDateConfirm = (date: React.SetStateAction<Date>) => {
+    setDueDate(date);
+    hideDatePicker();
+  };
 
   const handleCreateTask = () => {
     if (!title.trim()) {
@@ -24,7 +48,7 @@ const CreateTaskScreen: React.FC<CreateTaskScreenProps> = ({ onClose }) => {
       id: String(Math.random()),
       title: title.trim(),
       description: description.trim(),
-      dueDate: new Date(),
+      dueDate: dueDate,
       status: TaskStatus.Pending,
     };
 
@@ -36,6 +60,7 @@ const CreateTaskScreen: React.FC<CreateTaskScreenProps> = ({ onClose }) => {
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <TextInput
+          ref={titleRef}
           placeholder="What would you like to do?"
           value={title}
           onChangeText={(text) => setTitle(text)}
@@ -49,22 +74,28 @@ const CreateTaskScreen: React.FC<CreateTaskScreenProps> = ({ onClose }) => {
       </View>
       {error !== "" && <Text style={styles.error}>{error}</Text>}
       <View style={styles.buttonContainer}>
+        <View style={styles.iconContainer}>
+          <IconButton
+            icon="calendar"
+            onPress={showDatePicker}
+            iconColor={theme.colors.primary}
+            size={24}
+          />
+          <Text style={styles.dateText}>{format(dueDate, "d MMMM")}</Text>
+        </View>
         <IconButton
-          icon="calendar"
-          onPress={() => console.log("Date selected")}
-          style={styles.iconButton}
-        />
-        <IconButton
-          icon="close"
-          onPress={onClose}
-          style={[styles.iconButton]}
-        />
-        <IconButton
-          icon="check"
+          icon="arrow-up"
           onPress={handleCreateTask}
-          style={[styles.iconButton]}
+          iconColor={theme.colors.primary}
+          size={24}
         />
       </View>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleDateConfirm}
+        onCancel={hideDatePicker}
+      />
     </View>
   );
 };
@@ -81,18 +112,21 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 0,
     borderWidth: 0,
-    borderBottomWidth: 0,
-    borderTopWidth: 0,
+    height: 40,
+    backgroundColor: "white",
+  },
+  iconContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   descriptionInput: {
-    height: 50, // Increase height for description input
+    height: 50,
   },
   buttonContainer: {
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
-  },
-  iconButton: {
-    backgroundColor: "transparent",
+    backgroundColor: "#ffffff",
   },
   addButton: {
     color: "green", // Change color for add button
@@ -101,7 +135,11 @@ const styles = StyleSheet.create({
     color: "red",
     marginBottom: 10,
   },
+  dateText: {
+    fontSize: 16,
+    marginHorizontal: 8,
+    color: primaryColor,
+  },
 });
-
 
 export default CreateTaskScreen;

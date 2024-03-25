@@ -1,7 +1,8 @@
 export type RootStackParamList = {
     Home: undefined;
     CreateTask: undefined;
-    Inbox: undefined;
+    Inbox: undefined; 
+    Search: undefined;
     ListView: undefined;
     EditTask: { taskId: string };
     TaskDetails: { taskId: string };
@@ -14,5 +15,6 @@ export type RootStackParamList = {
     ListView: undefined;
     InboxStack: undefined;
     ListViewStack: undefined;
+   
     CreateTask: undefined;
   };

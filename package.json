@@ -16,6 +16,8 @@
     "@react-navigation/material-top-tabs": "^6.6.12",
     "@react-navigation/native": "^6.1.16",
     "@react-navigation/native-stack": "^6.9.25",
+    "color": "^4.2.3",
+    "date-fns": "^3.6.0",
     "expo": "~50.0.13",
     "expo-status-bar": "~1.11.1",
     "react": "18.2.0",
@@ -23,6 +25,7 @@
     "react-native": "0.73.5",
     "react-native-collapsible": "^1.6.1",
     "react-native-gesture-handler": "~2.14.0",
+    "react-native-modal-datetime-picker": "^17.1.0",
     "react-native-pager-view": "6.2.3",
     "react-native-paper": "^5.12.3",
     "react-native-reanimated": "~3.6.2",
@@ -34,6 +37,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@types/color": "^3.0.6",
     "@types/react": "~18.2.45",
     "typescript": "^5.1.3"
   },

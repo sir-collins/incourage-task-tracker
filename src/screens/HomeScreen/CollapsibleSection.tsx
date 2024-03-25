@@ -1,7 +1,7 @@
 import React from "react";
 import { List } from "react-native-paper";
 import { Task } from "../../types/task";
-import TaskItem from "../../components/TaskItem/TaskItem"
+import TaskItem from "../../components/TaskItem/TaskItem";
 interface CollapsibleSectionProps {
   title: string;
   tasks: Task[];
@@ -14,7 +14,11 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
   const titleWithTaskCount = `${title} (${tasks.length})`;
   return (
     <List.AccordionGroup>
-      <List.Accordion title={titleWithTaskCount} id={title}>
+      <List.Accordion
+        title={titleWithTaskCount}
+        id={title}
+        style={{ backgroundColor: "white", padding: 0 }}
+      >
         {tasks.map((task) => (
           <TaskItem key={task.id} task={task} />
         ))}

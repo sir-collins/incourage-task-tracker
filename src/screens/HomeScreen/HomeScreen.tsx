@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { FAB, Modal, Portal } from "react-native-paper";
 import { TaskStatus } from "../../types/task";
 import useTaskStore from "../../store/taskStore";
 import CollapsibleSection from "./CollapsibleSection";
 import CreateTaskScreen from "../CreateTaskScreen/CreateTaskScreen";
+import { getContrastBackgroundColor } from "../../constants/colors";
 
 const HomeScreen = () => {
   const {
@@ -39,14 +40,17 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {sections.map((section, index) => (
-        <CollapsibleSection
-          key={index}
-          title={section.title}
-          tasks={section.getTasks()}
-        />
-      ))}
+    <View style={[styles.container, {backgroundColor: '#f5f5f5'}]}>
+      <ScrollView>
+        {sections.map((section, index) => (
+          <CollapsibleSection
+            key={index}
+            title={section.title}
+            tasks={section.getTasks()}
+          />
+        ))}
+      </ScrollView>
+
       <FAB
         style={styles.addButton}
         icon="plus"
@@ -69,7 +73,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 8,
   },
   addButton: {
     position: "absolute",

@@ -6,7 +6,7 @@ import {
 import { TaskState } from "./types";
 import { Task, TaskStatus } from "../types/task";
 import { asyncStorage } from "../utils/storageUtils";
-import { formatDate } from "../utils/dateUtils";
+import { format, isToday, isTomorrow, isAfter, isBefore } from 'date-fns';
 import { nanoid } from "nanoid";
 
 const persistOptions: PersistOptions<TaskState, TaskState> = {
@@ -27,6 +27,7 @@ const useTaskStore = create(
     (set, get) => ({
       tasks: [],
       lists: [],
+      searchResults: [],
       addTask: (task) => set((state) => ({ tasks: [...state.tasks, task] })),
       updateTask: (taskId, updatedTask) =>
         set((state) => ({
@@ -37,42 +38,37 @@ const useTaskStore = create(
       deleteTask: (taskId) =>
         set((state) => ({
           tasks: state.tasks.filter((task) => task.id !== taskId),
+          searchResults: state.searchResults.filter(
+            (task) => task.id !== taskId
+          ),
         })),
       getTodayTasks: (): Task[] => {
-        const today = new Date();
-        const todayDateString = formatDate(today);
         return useTaskStore
           .getState()
           .tasks.filter(
             (task) =>
-              formatDate(task.dueDate) === todayDateString &&
+              isToday(new Date(task.dueDate)) &&
               task.status !== TaskStatus.Completed
           );
       },
       getTomorrowTasks: (): Task[] => {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const tomorrowDateString = formatDate(tomorrow);
         return useTaskStore
           .getState()
           .tasks.filter(
             (task) =>
-              formatDate(task.dueDate) === tomorrowDateString &&
+              isTomorrow(new Date(task.dueDate)) &&
               task.status !== TaskStatus.Completed
           );
       },
       getThisWeekTasks: (): Task[] => {
         const today = new Date();
         const endOfWeek = new Date(today.getTime() + 6 * 24 * 60 * 60 * 1000); // End of the week
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const tomorrowDateString = formatDate(tomorrow);
         return useTaskStore
           .getState()
           .tasks.filter(
             (task) =>
-              formatDate(task.dueDate) > tomorrowDateString &&
-              formatDate(task.dueDate) <= formatDate(endOfWeek) &&
+              isAfter(new Date(task.dueDate), new Date()) &&
+              isBefore(new Date(task.dueDate), endOfWeek) &&
               task.status !== TaskStatus.Completed
           );
       },
@@ -82,16 +78,18 @@ const useTaskStore = create(
           .tasks.filter((task) => task.status === status);
       },
       getOverdueTasks: (): Task[] => {
-        const today = new Date();
         return useTaskStore
           .getState()
           .tasks.filter(
             (task) =>
-              task.dueDate < today && task.status !== TaskStatus.Completed
+              isBefore(new Date(task.dueDate), new Date()) &&
+              task.status !== TaskStatus.Completed
           );
       },
       createList: (label) =>
-        set((state) => ({ lists: [...state.lists, { id: String(Math.random()), label }] })),
+        set((state) => ({
+          lists: [...state.lists, { id: String(Math.random()), label }],
+        })),
       updateList: (listId, newLabel) =>
         set((state) => ({
           lists: state.lists.map((list) =>
@@ -105,6 +103,19 @@ const useTaskStore = create(
             task.listId === listId ? { ...task, listId: undefined } : task
           ),
         })),
+        searchTasks: (searchText) => {
+          let filteredTasks: Task[] = [];
+          if (searchText.trim() === '') {
+              filteredTasks = [];
+          } else {
+              filteredTasks = get().tasks.filter((task) =>
+                  task.title.toLowerCase().includes(searchText.toLowerCase())
+              );
+          }
+          set({ searchResults: filteredTasks });
+      },
+      
+      clearSearchResults: () => set({ searchResults: [] }),
     }),
     persistOptions
   )
